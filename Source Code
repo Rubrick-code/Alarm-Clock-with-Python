@@ -1,0 +1,38 @@
+import datetime
+from playsound import playsound
+
+def validate_time(alarm_time):
+    """ Validate the user input time. """
+    if len(alarm_time) != 8:
+        return "Invalid time format! Please try again..."
+    else:
+        if int(alarm_time[0:2]) > 23 or int(alarm_time[3:5]) > 59 or int(alarm_time[6:8]) > 59:
+            return "Invalid time! Please try again..."
+        else:
+            return "ok"
+
+def main():
+    alarm_time = input("Enter the time for the alarm (HH:MM:SS): ")
+    validate = validate_time(alarm_time)
+    if validate != "ok":
+        print(validate)
+        return
+
+    alarm_hour = int(alarm_time[0:2])
+    alarm_minute = int(alarm_time[3:5])
+    alarm_seconds = int(alarm_time[6:8])
+    alarm_time = datetime.time(alarm_hour, alarm_minute, alarm_seconds)
+
+    print(f"Setting up an alarm for {alarm_time}...")
+    
+    while True:
+        now = datetime.datetime.now()
+        current_time = now.time()
+
+        if current_time.hour == alarm_time.hour and current_time.minute == alarm_time.minute and current_time.second == alarm_time.second:
+            print("Wake Up!")
+            playsound('path/to/alarm/sound.mp3')  # Replace with the path to your alarm sound file
+            break
+
+if __name__ == "__main__":
+    main()
